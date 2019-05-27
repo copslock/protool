@@ -1,0 +1,21 @@
+[
+  "test_burn.py::TestBurn::test_MACburn",
+  "test_burn.py::TestBurn::test_productclassburn",
+  "test_burn.py::TestBurn::test_OUIburn",
+  "test_burn.py::TestBurn::test_serialnumburn",
+  "test_burn.py::TestBurn::test_restoredefault",
+  "test_burn.py::TestBurn::test_createwan",
+  "test_check.py::TestCheck::test_restoredefault",
+  "test_check.py::TestCheck::test_GPONSN",
+  "test_check.py::TestCheck::test_MAC",
+  "test_check.py::TestCheck::test_productclass",
+  "test_check.py::TestCheck::test_manufacturerOUI",
+  "test_check.py::TestCheck::test_CustomerSWVersion",
+  "test_check.py::TestCheck::test_CustomerHWVersion",
+  "test_check.py::TestCheck::test_WLanSSID",
+  "test_check.py::TestCheck::test_WLanAuthMode",
+  "test_check.py::TestCheck::test_WLanWPAPSK",
+  "test_check.py::TestCheck::test_Txpower",
+  "test_check.py::TestCheck::test_exceptledallon",
+  "test_check.py::TestCheck::test_exceptledalloff"
+]

@@ -1,0 +1,23 @@
+add new bridge
+/userfs/bin/tcapi set Wan_PVC3 Active Yes
+/userfs/bin/tcapi set Wan_PVC3 IPVERSION IPv4
+/userfs/bin/tcapi set Wan_PVC3 dot1q Yes
+/userfs/bin/tcapi set Wan_PVC3 VLANID 1
+/userfs/bin/tcapi set Wan_PVC3 MVLAN -1
+/userfs/bin/tcapi commit Wan
+/userfs/bin/tcapi commit Wan_PVC3
+delete current PortBinding rules and add new PortBinding rules
+/userfs/bin/tcapi unset PortBind_Entry0
+/userfs/bin/tcapi unset PortBind_Entry1
+/userfs/bin/tcapi set PortBind_Common p0 No 
+/userfs/bin/tcapi set PortBind_Common p2 No
+/userfs/bin/tcapi set PortBind_Common p3 Yes
+/userfs/bin/tcapi set PortBind_Common w0 Yes
+/userfs/bin/tcapi set PortBind_Entry0 p3 Yes
+/userfs/bin/tcapi set PortBind_Entry0 e1 Yes
+/userfs/bin/tcapi set PortBind_Entry0 e2 Yes
+/userfs/bin/tcapi set PortBind_Entry0 e3 Yes
+/userfs/bin/tcapi set PortBind_Entry0 e4 Yes
+/userfs/bin/tcapi set PortBind_Entry0 w0 Yes
+/userfs/bin/tcapi commit PortBind
+/userfs/bin/tcapi save
