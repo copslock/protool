@@ -115,14 +115,17 @@ class TestCheck:
 
     def test_WLanSSID(self, test_setup):
         tn.write(b"tcapi get WLan_Entry0 SSID"+b"\n")
-        comval = config['produce']['WLanSSID']
+        comvalupper = config['produce']['mac'].upper()[8:]
+        value = ''.join(comvalupper.split(':'))
+        WlanSSID = "SILK_{}".format(value)
+        
         try:
-            content = tn.read_until(comval.encode('ascii'), timeout=2).decode()
+            content = tn.read_until(WlanSSID.encode('ascii'), timeout=2).decode()
             logging.info(content)
         except EOFError:
             logging.info("read WLanSSID error .....")
             time.sleep(100)
-        assert content.find(comval) != -1
+        assert content.find(WlanSSID) != -1
 
     @pytest.fixture
     def test_WLanAuthModeifopen(self, test_setup):

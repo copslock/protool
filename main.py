@@ -1,6 +1,6 @@
 '''fsf'''
 import graphic
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication
 
 import os
 import sys

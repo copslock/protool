@@ -6,6 +6,7 @@ import os
 import sys
 from configparser import ConfigParser
 import re
+import asyncio
 
 
 class para_interface(QWidget):
@@ -56,9 +57,6 @@ class para_interface(QWidget):
         button_submit = QPushButton("submit")
         button_submit.clicked.connect(self.exec_interface)
         button_submit.clicked.connect(self.setconfigpara)
-        button_submit.clicked.connect(self.close)
-
-
 
 
         layout = QGridLayout()
@@ -107,17 +105,14 @@ class para_interface(QWidget):
     def setMAC(self):
         text, okPressed = QInputDialog.getText(self, "Get text", "MAC:", QLineEdit.Normal,"")
         if okPressed and text != '' :
-            if re.match(r'\b[A-Za-z0-9]+\b', text) and len(text) == 12:
+            if re.match(r'\b[A-Fa-f0-9]+\b', text) and len(text) == 12:
                 alist = []
                 for i in range(0, len(text), 2):
                     alist.append(text[i:i+2])
                 text = ':'.join(alist)
-                print(2)
-            elif re.match(r'\b([A-Za-z0-9]{2}:){5}[A-Za-z0-9]{2}\b', text):
+            elif re.match(r'\b([A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}\b', text):
                 pass
-                print(3)
             else:
-                print(4)
                 self.judge_MAC = True
 
             self.MAClabel.setText(text)
@@ -147,10 +142,12 @@ class para_interface(QWidget):
 
     def exec_interface(self):
         if self.judge_MAC:
+            self.judge_MAC = False
             self.MAClabel.setStyleSheet("QLabel{color: red;}")
 
         else:
-            self.judge_MAC = False
+            
+            self.close()
             self.widget = exec_interface()
 
 
@@ -166,14 +163,14 @@ class exec_interface(QWidget):
         self.initUI()
         
 
-    def on_burn_button_clicked(self):
-            path = os.path.join(basedir, "test_burn.py")
-            pytest.main(args=[path, '--junitxml={}'.format(self.reportpath)])
+    async def on_burn_button_clicked(self):
+        path = os.path.join(basedir, "test_burn.py")
+        await pytest.main(args=[path, '--junitxml={}'.format(self.reportpath)])
     
 
-    def on_check_button_clicked(self):
-            path = os.path.join(basedir, "test_check.py")
-            pytest.main(args=[path, '--junitxml={}'.format(self.reportpath)])
+    async def on_check_button_clicked(self):
+        path = os.path.join(basedir, "test_check.py")
+        await pytest.main(args=[path, '--junitxml={}'.format(self.reportpath)])
 
         
     def initUI(self):
@@ -182,13 +179,13 @@ class exec_interface(QWidget):
         layout = QGridLayout()
         
         burn_button = QPushButton('burn')
-        burn_button.setStyleSheet("height:48px; width:120px")
-        burn_button.clicked.connect(self.on_burn_button_clicked)
+        burn_button.clicked.connect(asyncio.run(self.on_burn_button_clicked))
         check_button = QPushButton('check')
-        check_button.setStyleSheet("height:48px; width:120px")
-        check_button.clicked.connect(self.on_check_button_clicked)
+        check_button.clicked.connect(asyncio.run(self.on_check_button_clicked))
         layout.addWidget(burn_button, 0, 0)
+        layout.addWidget(QLabel(":)"), 0, 1, 0, 4)
         layout.addWidget(check_button, 1, 0)
+        layout.addWidget(QLabel(""), 1, 1, 4, 4)
         self.setLayout(layout)
         self.show()
         
