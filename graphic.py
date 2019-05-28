@@ -53,6 +53,8 @@ class para_interface(QWidget):
         button_submit = QPushButton("submit")
         button_submit.clicked.connect(self.exec_interface)
         button_submit.clicked.connect(self.setconfigpara)
+        button_submit.clicked.connect(self.close)
+
 
 
 
@@ -73,6 +75,7 @@ class para_interface(QWidget):
         layout.addWidget(self.CustomerHWVersionlabel, 4, 1)
         layout.addWidget(button_CustomerHWVersion, 4, 2)
         layout.addWidget(button_submit, 5, 2)
+    
 
         self.setconfigpara()
         self.setLayout(layout)
@@ -157,8 +160,10 @@ class exec_interface(QWidget):
         layout = QGridLayout()
         
         burn_button = QPushButton('burn')
+        burn_button.setStyleSheet("height:48px; width:120px")
         burn_button.clicked.connect(self.on_burn_button_clicked)
         check_button = QPushButton('check')
+        check_button.setStyleSheet("height:48px; width:120px")
         check_button.clicked.connect(self.on_check_button_clicked)
         layout.addWidget(burn_button, 0, 0)
         layout.addWidget(check_button, 1, 0)
