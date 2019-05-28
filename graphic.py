@@ -5,6 +5,7 @@ from basedir import basedir
 import os
 import sys
 from configparser import ConfigParser
+import re
 
 
 class para_interface(QWidget):
@@ -38,17 +39,19 @@ class para_interface(QWidget):
         self.CustomerSWVersionlabel = QLabel('')
         self.CustomerHWVersionlabel = QLabel('')
 
+        self.judge_MAC = False
 
 
-        button_GPONSN = QPushButton("")
+
+        button_GPONSN = QPushButton("input")
         button_GPONSN.clicked.connect(self.setGPONSN)
-        button_MAC = QPushButton("")
+        button_MAC = QPushButton("input")
         button_MAC.clicked.connect(self.setMAC)
-        button_productclass = QPushButton("")
+        button_productclass = QPushButton("input")
         button_productclass.clicked.connect(self.setproductclass)
-        button_CustomerSWVersion = QPushButton("")
+        button_CustomerSWVersion = QPushButton("input")
         button_CustomerSWVersion.clicked.connect(self.setCustomerSWVersion)
-        button_CustomerHWVersion = QPushButton("")
+        button_CustomerHWVersion = QPushButton("input")
         button_CustomerHWVersion.clicked.connect(self.setCustomerHWVersion)
         button_submit = QPushButton("submit")
         button_submit.clicked.connect(self.exec_interface)
@@ -97,16 +100,29 @@ class para_interface(QWidget):
 
     def setGPONSN(self):
         text, okPressed = QInputDialog.getText(self, "Get text", "GPONSN:", QLineEdit.Normal,"")
-        if okPressed and text != '':
+        if okPressed and text != '' :
             self.GPONSNlabel.setText(text)
 
 
     def setMAC(self):
         text, okPressed = QInputDialog.getText(self, "Get text", "MAC:", QLineEdit.Normal,"")
-        if okPressed and text != '':
+        if okPressed and text != '' :
+            if re.match(r'\b[A-Za-z0-9]+\b', text) and len(text) == 12:
+                alist = []
+                for i in range(0, len(text), 2):
+                    alist.append(text[i:i+2])
+                text = ':'.join(alist)
+                print(2)
+            elif re.match(r'\b([A-Za-z0-9]{2}:){5}[A-Za-z0-9]{2}\b', text):
+                pass
+                print(3)
+            else:
+                print(4)
+                self.judge_MAC = True
+
             self.MAClabel.setText(text)
-
-
+        else:
+            self.judge_MAC = True
 
     def setproductclass(self):
         text, okPressed = QInputDialog.getText(self, "Get text", "productclass:", QLineEdit.Normal,"")
@@ -130,7 +146,13 @@ class para_interface(QWidget):
 
 
     def exec_interface(self):
-        self.widget = exec_interface()
+        if self.judge_MAC:
+            self.MAClabel.setStyleSheet("QLabel{color: red;}")
+
+        else:
+            self.judge_MAC = False
+            self.widget = exec_interface()
+
 
 class exec_interface(QWidget):
     def __init__(self):
