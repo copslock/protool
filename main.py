@@ -1,7 +1,6 @@
 '''fsf'''
 import graphic
-from PyQt5.QtWidgets import QApplication
-
+from PySide2.QtWidgets import QApplication
 import os
 import sys
 
@@ -10,9 +9,11 @@ def main():
     '''fsf'''
     app = QApplication(sys.argv)
 
+    app.setStyle(u"Fusion")
+
     para = graphic.para_interface()
 
-    app.exec_(app.exec())
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
